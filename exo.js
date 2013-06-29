@@ -39,10 +39,7 @@ app.get('/', function(req, res){
 app.post('/', function(req, res, next){
 	var newFileName = makeid() + path.extname(req.files.image.name)
   	fs.renameSync(req.files.image.path, './uploads/' + newFileName);
-  	console.log('File uploaded: ' + newFileName);
-  	
   	res.send('Find your image on 127.0.0.1:3000/uploads/' + newFileName);
-  	
 });
 
 if (!module.parent) {
