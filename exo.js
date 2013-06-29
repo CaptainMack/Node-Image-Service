@@ -37,9 +37,12 @@ app.get('/', function(req, res){
 
 // Generate new ID (filename) for uploaded file)
 app.post('/', function(req, res, next){
-	var newID = makeid();
-  	fs.renameSync(req.files.image.path, './uploads/' + newID + path.extname(req.files.image.name));
-  	console.log('File uploaded: ' + newID);
+	var newFileName = makeid() + path.extname(req.files.image.name)
+  	fs.renameSync(req.files.image.path, './uploads/' + newFileName);
+  	console.log('File uploaded: ' + newFileName);
+  	
+  	res.send('Find your image on 127.0.0.1:3000/uploads/' + newFileName);
+  	
 });
 
 if (!module.parent) {
