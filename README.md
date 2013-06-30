@@ -2,7 +2,7 @@ Node.js Image Upload Service
 =================
 Written by Christian 
 
-A fairly basic image upload webservice written in JavaScript for Node.js
+A clustered image upload webservice written for Node.js
 
 
 Usage
