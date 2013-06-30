@@ -1,4 +1,4 @@
-Node.js Image Upload Service
+Node.js Image Webservice
 =================
 Written by Christian 
 
