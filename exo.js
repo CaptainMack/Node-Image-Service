@@ -9,14 +9,16 @@ var express = require('express')
 var date = new Date();
 var path = require('path')
 var app = module.exports = express();
+//Cluster
+/*var cluster = require('cluster');
+var numCPUs = require('os').cpus().length; */
 
 //Configuration
 var uploadDirectory = './uploads/';
 var idLength = 10;
 
 // Functions
-function makeid()
-{
+function makeid()	{
     var id = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     for( var i=0; i < idLength; i++ )	{
@@ -30,7 +32,7 @@ function makeid()
 app.use(express.bodyParser({keepExtensions: true, uploadDir:uploadDirectory}))
 
 // Form
-app.get('/', function(req, res){
+app.get('/', function(req, res)	{
   res.send('<form method="post" enctype="multipart/form-data">'
     + '<p>Image: <input type="file" name="image" /></p>'
     + '<p><input type="submit" value="Upload" /></p>'
@@ -38,13 +40,13 @@ app.get('/', function(req, res){
 });
 
 // Generate new ID (filename) for uploaded file)
-app.post('/', function(req, res, next){
+app.post('/', function(req, res, next)	{
 	var newFileName = makeid() + path.extname(req.files.image.name)
   	fs.renameSync(req.files.image.path, uploadDirectory + newFileName);
   	res.json(200, {imageID: newFileName})
 });
 
-if (!module.parent) {
+if (!module.parent)	{
   	app.listen(3000);
   	console.log('Node started on ' + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + " - " + date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear());
 }
