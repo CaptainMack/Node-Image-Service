@@ -1,19 +1,15 @@
-/**
- * 
- * Module dependencies.
- */
-// Dependencies
+// Module Dependencies
 var fs = require('fs');
 var express = require('express')
   , format = require('util').format;
 var date = new Date();
 var path = require('path')
 var app = module.exports = express();
-//Cluster
+// Cluster Dependencies
 var cluster = require('cluster');
 var numCPUs = require('os').cpus().length;
 
-//Configuration
+//Configuration variables
 var uploadDirectory = './uploads/';
 var idLength = 10;
 
@@ -27,7 +23,7 @@ function makeid()	{
     return id;
 }
 
-
+// Cluster generation
 if (cluster.isMaster) {
   // Fork workers.
   for (var i = 0; i < numCPUs; i++) {
@@ -37,10 +33,11 @@ if (cluster.isMaster) {
   console.log('worker ' + worker.process.pid + ' died');
   });
 } else {
-//BodyParser
+
+	//BodyParser
 	app.use(express.bodyParser({keepExtensions: true, uploadDir:uploadDirectory}))
 	
-	// Form
+	//Form (debug)
 	app.get('/', function(req, res)	{
 	  res.send('<form method="post" enctype="multipart/form-data">'
 	    + '<p>Image: <input type="file" name="image" /></p>'
@@ -48,7 +45,28 @@ if (cluster.isMaster) {
 	    + '</form>');
 	});
 	
-	// Generate new ID (filename) for uploaded file)
+	/* View service
+	* Used for serving images eg. ip/view?uid=image.jpg
+	* will send image.jpg in the response
+	*/
+	app.get('/view', function(req, res)	{
+		var uid = req.query.uid;
+		res.sendfile(uploadDirectory + uid);
+	});
+	
+	/* Download service
+	* Used for download images eg. ip/download?uid=image.jpg
+	* will prompt the user to download the image
+	*/
+	app.get('/download', function(req, res)	{
+		var uid = req.query.uid;
+		res.download(uploadDirectory + uid);
+	});
+	
+	/* Upload service
+	* Files is sent through a POST, service will generate
+	* random ID and rename file accordingly.
+	*/
 	app.post('/', function(req, res, next)	{
 		var newFileName = makeid() + path.extname(req.files.image.name)
 	  	fs.renameSync(req.files.image.path, uploadDirectory + newFileName);
