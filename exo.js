@@ -52,12 +52,13 @@ if (cluster.isMaster) {
 	app.post('/', function(req, res, next)	{
 		var newFileName = makeid() + path.extname(req.files.image.name)
 	  	fs.renameSync(req.files.image.path, uploadDirectory + newFileName);
+	  	console.log('Node' + cluster.worker.id + ' processed ' + newFileName);
 	  	res.json(200, {imageID: newFileName})
 	});
 	
 	if (!module.parent)	{
 	  	app.listen(3000);
-	  	console.log('Node started on ' + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + " - " + date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear());
+	  	console.log('Node ' + cluster.worker.id + ' started on ' + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + ":" + date.getMilliseconds() +  " - " + date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear());
 	}
 
 }
