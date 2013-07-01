@@ -1,6 +1,6 @@
 Node.js Image Webservice
 =================
-Written by Christian 
+Coded by Christian 
 
 A clustered image webservice using redis as database - written for Node.js
 
