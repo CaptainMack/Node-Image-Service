@@ -1,10 +1,13 @@
 // Module Dependencies
 var fs = require('fs');
-var express = require('express')
-  , format = require('util').format;
+var express = require('express'), format = require('util').format;
 var date = new Date();
 var path = require('path')
 var app = module.exports = express();
+
+//Database Dependencies
+var redis = require("redis"), client = redis.createClient();
+
 // Cluster Dependencies
 var cluster = require('cluster');
 var numCPUs = require('os').cpus().length;
@@ -51,7 +54,10 @@ if (cluster.isMaster) {
 	*/
 	app.get('/view', function(req, res)	{
 		var uid = req.query.uid;
-		res.sendfile(uploadDirectory + uid);
+		client.hget(uid, "file", function (err, reply) {
+	    	res.sendfile(uploadDirectory + reply.toString());
+	    	client.hincrby(uid, "views", 1);
+	    });		
 	});
 	
 	/* Download service
@@ -60,7 +66,10 @@ if (cluster.isMaster) {
 	*/
 	app.get('/download', function(req, res)	{
 		var uid = req.query.uid;
-		res.download(uploadDirectory + uid);
+		client.hget(uid, "file", function (err, reply) {
+			res.download(uploadDirectory + reply.toString());
+			client.hincrby(uid, "downloads", 1);
+		});	
 	});
 	
 	/* Upload service
@@ -68,10 +77,15 @@ if (cluster.isMaster) {
 	* random ID and rename file accordingly.
 	*/
 	app.post('/upload', function(req, res, next)	{
-		var newFileName = makeid() + path.extname(req.files.image.name)
+		var newID = makeid();
+		var newFileName = newID + path.extname(req.files.image.name)
 	  	fs.renameSync(req.files.image.path, uploadDirectory + newFileName);
-	  	console.log('Node' + cluster.worker.id + ' processed ' + newFileName);
+	  	client.hset(newID, "file", newFileName, redis.print);
+	  	client.hset(newID, "views", 0, redis.print);
+	  	client.hset(newID, "downloads", 0, redis.print);
+	  	client.hset(newID, "owner", 0, redis.print);
 	  	res.json(200, {imageID: newFileName})
+	  	console.log('Node' + cluster.worker.id + ' processed ' + newFileName);
 	});
 	
 	if (!module.parent)	{
