@@ -39,7 +39,7 @@ if (cluster.isMaster) {
 	
 	//Form (debug)
 	app.get('/', function(req, res)	{
-	  res.send('<form method="post" enctype="multipart/form-data">'
+	  res.send('<form method="post" action="/upload" enctype="multipart/form-data">'
 	    + '<p>Image: <input type="file" name="image" /></p>'
 	    + '<p><input type="submit" value="Upload" /></p>'
 	    + '</form>');
@@ -67,7 +67,7 @@ if (cluster.isMaster) {
 	* Files is sent through a POST, service will generate
 	* random ID and rename file accordingly.
 	*/
-	app.post('/', function(req, res, next)	{
+	app.post('/upload', function(req, res, next)	{
 		var newFileName = makeid() + path.extname(req.files.image.name)
 	  	fs.renameSync(req.files.image.path, uploadDirectory + newFileName);
 	  	console.log('Node' + cluster.worker.id + ' processed ' + newFileName);

@@ -16,12 +16,19 @@ The service will spawn a cluster with N number of child-process (based on CPU co
 
 API:
 
-	To retrieve an image in a response use
+	To retrieve an image in a response use GET
 	http://ip/view?=uid
 	
-	To upload an image
-	http://ip/upload?=uid
+	To upload an image, use POST
+	http://ip/upload
 	
-	To download an image
+	To download an image, use GET
 	http://ip/download?=uid
 	
+
+
+TO-DO
+=================
+
+- Implementation of more view functions (view specific, view all, view based on date)
+- Implementation of redis or mongodb for database features
