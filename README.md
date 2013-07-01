@@ -16,8 +16,8 @@ Usage
 The service will spawn a cluster with N number of child-process (based on CPU cores), each process will compete for a connection - balancing the load.
 
 
-API:
-
+API
+=================
 	To retrieve an image in a response use GET
 	http://ip/view?uid=
 	
