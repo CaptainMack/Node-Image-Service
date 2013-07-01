@@ -84,7 +84,10 @@ if (cluster.isMaster) {
 					returnJSON.downloads = reply.toString();
 					client.hget(uid, "size", function (err, reply) {
 						returnJSON.size = reply.toString();
-							res.json(200, returnJSON);
+						client.hget(uid, "date", function (err, reply) {
+							returnJSON.date = reply.toString();
+								res.json(200, returnJSON);
+						});	
 					});	
 				});	
 			});
@@ -103,6 +106,7 @@ if (cluster.isMaster) {
 	  	client.hset(newID, "downloads", 0);
 	  	client.hset(newID, "owner", 0);
 	  	client.hset(newID, "size", req.files.image.size);
+	  	client.hset(newID, "date", (new Date).getTime());
 	  	res.json(200, {imageID: newFileName});
 	  	console.log('Node ' + cluster.worker.id + ' processed ' + newFileName);
 	});
