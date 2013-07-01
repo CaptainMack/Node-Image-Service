@@ -2,11 +2,13 @@ Node.js Image Webservice
 =================
 Written by Christian 
 
-A clustered image upload webservice written for Node.js
+A clustered image webservice using redis as database - written for Node.js
 
 
 Usage
 =================
+- Setup configuration in exo.js file (local directories and redis info)
+- Make sure redis is running
 - Run node exo.js through terminal
 - The webservice will print start time and date, navigate to 127.0.0.1:3000 (port can be change in exo.js)
 - A simple form has been implemented, so it's possible to test before implementing it. As of now, the service will return a HTTP Response code 200 with a JSON object containing the image id (same used for storing the image). It's possible to change the number of characters in the id by extending the loop in which the id is generated.
@@ -31,4 +33,3 @@ TO-DO
 =================
 
 - Implementation of more view functions (view specific, view all, view based on date)
-- Implementation of redis or mongodb for database features
