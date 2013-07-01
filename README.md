@@ -35,4 +35,5 @@ API:
 TO-DO
 =================
 
-- Implementation of more view functions (view specific, view all, view based on date)
+- Implementation of more view functions (view specific image, view all, view based on date)
+- Scoring system, showing most popular first (today, week, month, all-time)
