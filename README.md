@@ -35,6 +35,6 @@ API:
 TO-DO
 =================
 
-- Implementation of more view functions (view specific image, view all, view based on date)
-- Scoring system, showing most popular first (today, week, month, all-time)
-- Add existing ID check to avoid images being overwritten.
+- [ ] Implementation of more view functions (view specific image, view all, view based on date)
+- [ ] Scoring system, showing most popular first (today, week, month, all-time)
+- [ ] Add existing ID check to avoid images being overwritten.
