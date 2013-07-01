@@ -80,12 +80,12 @@ if (cluster.isMaster) {
 		var newID = makeid();
 		var newFileName = newID + path.extname(req.files.image.name)
 	  	fs.renameSync(req.files.image.path, uploadDirectory + newFileName);
-	  	client.hset(newID, "file", newFileName, redis.print);
-	  	client.hset(newID, "views", 0, redis.print);
-	  	client.hset(newID, "downloads", 0, redis.print);
-	  	client.hset(newID, "owner", 0, redis.print);
+	  	client.hset(newID, "file", newFileName);
+	  	client.hset(newID, "views", 0);
+	  	client.hset(newID, "downloads", 0);
+	  	client.hset(newID, "owner", 0);
 	  	res.json(200, {imageID: newFileName})
-	  	console.log('Node' + cluster.worker.id + ' processed ' + newFileName);
+	  	console.log('Node ' + cluster.worker.id + ' processed ' + newFileName);
 	});
 	
 	if (!module.parent)	{
