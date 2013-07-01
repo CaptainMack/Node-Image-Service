@@ -72,6 +72,24 @@ if (cluster.isMaster) {
 		});	
 	});
 	
+	/* Statistics service
+	* Used for showing statistics
+	*/
+	app.get('/statistics', function(req, res)	{
+		var uid = req.query.uid;
+		var returnJSON = { };
+			client.hget(uid, "views", function (err, reply) {
+				returnJSON.views = reply.toString();
+				client.hget(uid, "downloads", function (err, reply) {
+					returnJSON.downloads = reply.toString();
+					client.hget(uid, "size", function (err, reply) {
+						returnJSON.size = reply.toString();
+							res.json(200, returnJSON);
+					});	
+				});	
+			});
+	});
+	
 	/* Upload service
 	* Files is sent through a POST, service will generate
 	* random ID and rename file accordingly.
@@ -84,7 +102,8 @@ if (cluster.isMaster) {
 	  	client.hset(newID, "views", 0);
 	  	client.hset(newID, "downloads", 0);
 	  	client.hset(newID, "owner", 0);
-	  	res.json(200, {imageID: newFileName})
+	  	client.hset(newID, "size", req.files.image.size);
+	  	res.json(200, {imageID: newFileName});
 	  	console.log('Node ' + cluster.worker.id + ' processed ' + newFileName);
 	});
 	
