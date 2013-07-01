@@ -19,13 +19,16 @@ The service will spawn a cluster with N number of child-process (based on CPU co
 API:
 
 	To retrieve an image in a response use GET
-	http://ip/view?=uid
+	http://ip/view?uid=
 	
 	To upload an image, use POST
 	http://ip/upload
 	
 	To download an image, use GET
-	http://ip/download?=uid
+	http://ip/download?uid=
+	
+	To retrieve image statistics use GET
+	http://ip/statistics?uid=
 	
 
 
