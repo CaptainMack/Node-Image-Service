@@ -8,6 +8,9 @@ var app = module.exports = express();
 //Database Dependencies
 var redis = require("redis"), client = redis.createClient();
 
+//Metrics Dependencies
+var stats = require('measured').createCollection();
+
 // Cluster Dependencies
 var cluster = require('cluster');
 var numCPUs = require('os').cpus().length;
@@ -15,6 +18,7 @@ var numCPUs = require('os').cpus().length;
 //Configuration variables
 var uploadDirectory = './uploads/';
 var idLength = 10;
+var metricsRefresh = 10000 //in ms
 
 // Functions
 function makeid()	{
@@ -36,6 +40,15 @@ if (cluster.isMaster) {
   console.log('worker ' + worker.process.pid + ' died');
   });
 } else {
+	/* Monitoring Node.js metrics
+	* will print current load on terminal
+	* WORK IN PROGRESS
+	*/
+	/*setInterval(function() {
+	  console.log(stats.toJSON().viewsPerSecond);
+	  //client.hset("statistics", "viewsPerSecond", stats.toJSON.viewsPerSecond);
+	}, metricsRefresh);
+	*/
 
 	//BodyParser
 	app.use(express.bodyParser({keepExtensions: true, uploadDir:uploadDirectory}))
@@ -57,6 +70,7 @@ if (cluster.isMaster) {
 		client.hget(uid, "file", function (err, reply) {
 	    	res.sendfile(uploadDirectory + reply.toString());
 	    	client.hincrby(uid, "views", 1);
+	    	stats.meter('viewsPerSecond').mark();
 	    });		
 	});
 	
@@ -69,6 +83,7 @@ if (cluster.isMaster) {
 		client.hget(uid, "file", function (err, reply) {
 			res.download(uploadDirectory + reply.toString());
 			client.hincrby(uid, "downloads", 1);
+			stats.meter('downloadsPerSecond').mark();
 		});	
 	});
 	
@@ -108,6 +123,7 @@ if (cluster.isMaster) {
 	  	client.hset(newID, "size", req.files.image.size);
 	  	client.hset(newID, "date", (new Date).getTime());
 	  	res.json(200, {imageID: newFileName});
+	  	stats.meter('uploadsPerSecond').mark();
 	  	console.log('Node ' + cluster.worker.id + ' processed ' + newFileName);
 	});
 	
