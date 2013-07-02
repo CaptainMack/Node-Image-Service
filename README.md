@@ -30,6 +30,9 @@ API
 	To retrieve image statistics use GET
 	http://ip/statistics?uid=
 	
+	To retrieve server metrics use GET
+	http://ip/metric
+	
 
 
 TO-DO
