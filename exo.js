@@ -65,6 +65,15 @@ if (cluster.isMaster) {
 	    });		
 	});
 	
+	/* User service
+	* Used for creating/modifying/deleting users
+	*/
+	/*app.post('/user', function(req, res)	{
+		var userName = req.body.userName.toString()
+		
+		stats.meter('usersCreatedPerSecond').mark();
+	});*/
+	
 	/* Download service
 	* Used for download images eg. ip/download?uid=image.jpg
 	* will prompt the user to download the image
