@@ -5,6 +5,17 @@ Coded by Christian
 A clustered image webservice using redis as database - written for Node.js
 
 
+Features
+=================
+
+- Upload service
+- Download service
+- Viewing service
+- Statistics service
+- Server Metrics service
+- Redis as database
+
+
 Usage
 =================
 - Setup configuration in exo.js file (local directories and redis info)
