@@ -18,7 +18,6 @@ var numCPUs = require('os').cpus().length;
 //Configuration variables
 var uploadDirectory = './uploads/';
 var idLength = 10;
-var metricsRefresh = 10000 //in ms
 
 // Functions
 function makeid()	{
