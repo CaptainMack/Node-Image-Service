@@ -40,16 +40,7 @@ if (cluster.isMaster) {
   console.log('worker ' + worker.process.pid + ' died');
   });
 } else {
-	/* Monitoring Node.js metrics
-	* will print current load on terminal
-	* WORK IN PROGRESS
-	*/
-	/*setInterval(function() {
-	  console.log(stats.toJSON().viewsPerSecond);
-	  //client.hset("statistics", "viewsPerSecond", stats.toJSON.viewsPerSecond);
-	}, metricsRefresh);
-	*/
-
+	
 	//BodyParser
 	app.use(express.bodyParser({keepExtensions: true, uploadDir:uploadDirectory}))
 	
@@ -125,6 +116,14 @@ if (cluster.isMaster) {
 	  	res.json(200, {imageID: newFileName});
 	  	stats.meter('uploadsPerSecond').mark();
 	  	console.log('Node ' + cluster.worker.id + ' processed ' + newFileName);
+	});
+	
+	/* Monitoring Service
+	* Used for getting load-metrics from node clusters
+	* WORK IN PROGRESS
+	*/
+	app.get('/metric', function(req, res)	{
+		res.json(200, stats.toJSON());	
 	});
 	
 	if (!module.parent)	{
