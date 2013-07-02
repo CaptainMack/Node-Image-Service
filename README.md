@@ -12,7 +12,7 @@ Features
 - Download service
 - Viewing service
 - Statistics service
-- Server Metrics service
+- Metrics service
 - Redis as database
 
 
