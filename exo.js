@@ -104,17 +104,21 @@ if (cluster.isMaster) {
 	*/
 	app.post('/upload', function(req, res, next)	{
 		var newID = makeid();
-		var newFileName = newID + path.extname(req.files.image.name)
-	  	fs.renameSync(req.files.image.path, uploadDirectory + newFileName);
-	  	client.hset(newID, "file", newFileName);
-	  	client.hset(newID, "views", 0);
-	  	client.hset(newID, "downloads", 0);
-	  	client.hset(newID, "owner", 0);
-	  	client.hset(newID, "size", req.files.image.size);
-	  	client.hset(newID, "date", (new Date).getTime());
-	  	res.json(200, {imageID: newFileName});
-	  	stats.meter('uploadsPerSecond').mark();
-	  	console.log('Node ' + cluster.worker.id + ' processed ' + newFileName);
+		client.hexists(newID, "file", function (err, reply) {
+			if (reply.toString()==0) {
+				var newFileName = newID + path.extname(req.files.image.name)
+			  	fs.renameSync(req.files.image.path, uploadDirectory + newFileName);
+			  	client.hset(newID, "file", newFileName);
+			  	client.hset(newID, "views", 0);
+			  	client.hset(newID, "downloads", 0);
+			  	client.hset(newID, "owner", 0);
+			  	client.hset(newID, "size", req.files.image.size);
+			  	client.hset(newID, "date", (new Date).getTime());
+			  	res.json(200, {imageID: newFileName});
+			  	stats.meter('uploadsPerSecond').mark();
+			  	console.log('Node ' + cluster.worker.id + ' processed ' + newFileName);
+		  	}
+		  });
 	});
 	
 	/* Monitoring Service
