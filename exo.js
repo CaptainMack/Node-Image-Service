@@ -47,6 +47,7 @@ if (cluster.isMaster) {
 	app.get('/', function(req, res)	{
 	  res.send('<form method="post" action="/upload" enctype="multipart/form-data">'
 	    + '<p>Image: <input type="file" name="image" /></p>'
+	    + '<p>Title: <input type="text" name="title" /></p>'
 	     + '<input type="hidden" name="owner" value="CaptainMack" />'
 	    + '<p><input type="submit" value="Upload" /></p>'
 	    + '</form>');
@@ -121,6 +122,7 @@ if (cluster.isMaster) {
 			  	client.hset(newID, "file", newFileName);
 			  	client.hset(newID, "views", 0);
 			  	client.hset(newID, "downloads", 0);
+			  	client.hset(newID, "title", req.body.title.toString());
 			  	client.hset(newID, "owner", req.body.owner.toString());
 			  	client.hset(newID, "size", req.files.image.size);
 			  	client.hset(newID, "date", (new Date).getTime());
