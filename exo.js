@@ -122,6 +122,7 @@ if (cluster.isMaster) {
 			  	client.hset(newID, "file", newFileName);
 			  	client.hset(newID, "views", 0);
 			  	client.hset(newID, "downloads", 0);
+			  	client.hset(newID, "score", 0);
 			  	client.hset(newID, "title", req.body.title.toString());
 			  	client.hset(newID, "owner", req.body.owner.toString());
 			  	client.hset(newID, "size", req.files.image.size);
