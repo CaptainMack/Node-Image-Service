@@ -1,26 +1,10 @@
 *.jpeg
-<<<<<<< HEAD
-=======
 ExperienceShare.esproj
->>>>>>> 8346dd6396c01a8f6fdd36125b41bb05bf359a10
-
 *.espressostorage
-
-.DS_Store
-
-.DS_Store
-
-.DS_Store
-
 ExperienceShare.esproj/user.Christian.espressostorage
-
-ExperienceShare.esproj/user.Christian.espressostorage
-=======
 *.esproj
-.DS_Store
-
->>>>>>> 7c0ff8ee3925d8d31d5a6f39f117254ba80f3c38
-
+*.DS_Store
 *.jpg
-
+*.png
+*.gif
 *.rdb
