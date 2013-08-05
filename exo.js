@@ -67,6 +67,9 @@ if (cluster.isMaster) {
 	    });		
 	});
 	
+	/* Comment services
+	* Used for viewing/saving comments
+	*/
 	/* User service
 	* Used for creating/modifying/deleting users
 	*/
@@ -128,7 +131,9 @@ if (cluster.isMaster) {
 			  	client.hset(newID, "owner", req.body.owner.toString());
 			  	client.hset(newID, "size", req.files.image.size);
 			  	client.hset(newID, "date", (new Date).getTime());
+			  	res.set('Access-Control-Allow-Origin', '*');
 			  	res.json(200, {imageID: newFileName});
+			  	res.setHeader
 			  	stats.meter('uploadsPerSecond').mark();
 			  	console.log('Node ' + cluster.worker.id + ' processed ' + newFileName);
 		  	}
@@ -144,7 +149,7 @@ if (cluster.isMaster) {
 	});
 	
 	if (!module.parent)	{
-	  	app.listen(3000);
+	  	app.listen(80);
 	  	console.log('Node ' + cluster.worker.id + ' started on ' + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + ":" + date.getMilliseconds() +  " - " + date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear());
 	}
 
